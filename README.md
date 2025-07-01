@@ -52,12 +52,12 @@ Si se observa la media y el segundo cuartil para cada réplica, la media es cons
 
 Luego, realicé un histograma para cada columna.
 Los histogramas pueden observarse en las imágenes adjuntas:
-- 'histograma_wt_1.png'
-- 'histograma_wt_2.png'
-- 'histograma_wt_3.png'
-- 'histograma_mut_1.png'
-- 'histograma_mut_2.png'
-- 'histograma_mut_3.png'
+- `histograma_wt_1.png`
+- `histograma_wt_2.png`
+- `histograma_wt_3.png`
+- `histograma_mut_1.png`
+- `histograma_mut_2.png`
+- `histograma_mut_3.png`
 A simple vista, esos histogramas parecerían seguir una ditribución normal. Si los miramos con detenimiento, podemos observar la campana un poco corrida a la izquierda y que las colas son chatas pareciendo ser la derecha más abacrativa que la izquierda. Esto se alinea con la observación de la media y la mediana descripta anteriormente, sugiriendo una leve asimetría a la derecha. Es por esto que el siguiente paso fue la evaluación de asimetría.
 
 ***Evaluación de asimetría y curtosis***
@@ -101,8 +101,8 @@ Como el pvalor fue mayor a 0.05 (p-value = 0.4026), este test estadístico nos i
 
 Como el objetivo de una proteómica es, además, comparar la abundancia relativa de cada proteína tanto en la cepa wild-type como la cepa mutante, utilicé tanto el método no paramétrico (prueba de Mann-Whitney) como el método paramétrico (t-test) para evaluar la significancia en cada fila. Para el método paramétrico sumé el parámetro de magnitud de cambio (FoldChange), ya que no solamente alcanza con el p-value para asumir una diferencia entre la abundancia proteica relativa.
 Estos resultados se pueden ver en las tablas
-- 'resultado_mannwhitney_proteina.csv': resultados de la prueba de Mann Whitney proteína por proteína
-- 'resultado_ttest_fc_proteina.csv': resultados del t-test con fold-change proteína por proteína
+- `resultado_mannwhitney_proteina.csv`: resultados de la prueba de Mann Whitney proteína por proteína
+- `resultado_ttest_fc_proteina.csv`: resultados del t-test con fold-change proteína por proteína
 Por un lado, con la prueba de Mann Whitney no se observaron p-valores menores a 0.05, lo que estaría indicando que no hay proteínas con diferencias en su expresión entre ambas condiciones.
 Respecto al t-test, para decir que las proteínas están diferencialmente expresadas se utilizó como corte que el p-valor debe ser menor a 0.05 y el |log2FoldChange| debe ser mayor a |2|. Utilizando este criterio, no se observaron proteínas diferencialmente expresadas entre ambas condiciones.
 Se agregó en el código que se impriman las 10 proteínas con menor p-valor porque me pareció que da un paneo rápido de lo que después se va a observar en la tabla completa.
