@@ -58,6 +58,7 @@ Los histogramas pueden observarse en las imágenes adjuntas:
 - `histograma_mut_1.png`
 - `histograma_mut_2.png`
 - `histograma_mut_3.png`
+
 A simple vista, esos histogramas parecerían seguir una ditribución normal. Si los miramos con detenimiento, podemos observar la campana un poco corrida a la izquierda y que las colas son chatas pareciendo ser la derecha más abacrativa que la izquierda. Esto se alinea con la observación de la media y la mediana descripta anteriormente, sugiriendo una leve asimetría a la derecha. Es por esto que el siguiente paso fue la evaluación de asimetría.
 
 ***Evaluación de asimetría y curtosis***
