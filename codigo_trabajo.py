@@ -42,6 +42,9 @@ print(datos_prot_final[['log2_WT-1', 'log2_WT-2', 'log2_WT-3', 'log2_MUT-1', 'lo
 #75%      20.069072    20.082128    20.055897    20.029179    20.069072    20.055897
 #max      29.055690    29.026966    29.076227    29.228485    29.118921    29.088916
 
+
+# Se observa que la media es consistentemente ligeramente superior a la mediana (~0.1), lo cual sugiere una leve asimetría a la derecha 
+
 cols_log = ['log2_WT-1', 'log2_WT-2', 'log2_WT-3', 'log2_MUT-1', 'log2_MUT-2', 'log2_MUT-3']
 
 # Hacer un histograma para cada columna de datos logarítmicos
@@ -50,22 +53,10 @@ for col in cols_log:
     plt.xlabel("Intensidad log2")
     plt.ylabel("Frecuencia")
     plt.title(f"Histograma {col}")
-    #plt.show()
+    plt.show()
 
-# Los histogramas parecieran corresponder a una distribución normal en todos los casos
+# Los histogramas parecieran corresponder a simple vista a una distribución normal en todos los casos, pero hay detalles como un leve corrimiento del pico a la izquierda que no me hacen estar segura.
 
-# Calculo de la mediana para cada réplica
-print(datos_prot_final[['log2_WT-1', 'log2_WT-2', 'log2_WT-3', 'log2_MUT-1', 'log2_MUT-2', 'log2_MUT-3']].median())
-
-#log2_WT-1     18.451976
-#log2_WT-2     18.424244
-#log2_WT-3     18.416138
-#log2_MUT-1    18.385403
-#log2_MUT-2    18.412553
-#log2_MUT-3    18.396099
-
-# Se observa que la media es consistentemente ligeramente superior a la mediana (~0.1 log2), lo cual sugiere una leve asimetría a la derecha 
-# A pesar de esto, las distribuciones mantienen una forma cercana a la normal
 
 # Evaluación de asimetría 
 skewness = datos_prot_final[cols_log].skew(axis=0, skipna=True, numeric_only=True)
@@ -99,8 +90,8 @@ print(curtosis)
 # Como tengo un n > 30, utilizo la función de distribución normal estándar
 for col in cols_log:
     data = datos_prot_final[col].dropna() 
-    media = data.mean() # media
-    sem = ss.sem(data)  # error estándar de la media
+    media = data.mean() 
+    sem = ss.sem(data)  
     
     ic = ss.norm.interval(confidence=0.95, loc=media, scale=sem)
     
@@ -111,11 +102,6 @@ for col in cols_log:
 #log2_MUT-1: Media=18.505, IC 95% normal = [18.426, 18.585]
 #log2_MUT-2: Media=18.534, IC 95% normal = [18.455, 18.613]
 #log2_MUT-3: Media=18.518, IC 95% normal = [18.439, 18.598]
-
-# Tamaño muestral
-# En estudios de proteómica el objetivo no es validar una única diferencia entre condiciones, sino detectar múltiples cambios potencialmente relevantes.
-# Además, existe consenso metodológico en el uso de al menos 3 réplicas biológicas independientes por grupo, lo cual es el diseño utilizado en este estudio.
-# Por este motivo, no se calcula tamaño muestral en este análisis.
 
 # Supuesto de normalidad. Test de normalidad
 # H0: los datos se distribuyen normalmente.
@@ -141,8 +127,8 @@ for col in cols_log:
 # El pvalue es menor a 0.05, por lo que se rechaza la hipótesis nula de normalidad; los datos no se distribuyen de manera normal.
 
 # Supuesto de homocedasticidad de varianzas. Test de Levene.
-# H0 = homocedasticidad de varianzas en el peso seco de las muestras es debido al azar.
-# H1 = homocedasticidad de varianzas en el peso seco de las muestras no es debido al azar.
+# H0 = homocedasticidad de varianzas en la abundancia relativa de proteínas de las muestras es debido al azar.
+# H1 = homocedasticidad de varianzas en la abundancia relativa de proteínas de las muestras no es debido al azar.
 
 cols_WT = ['log2_WT-1', 'log2_WT-2', 'log2_WT-3']
 cols_MUT = ['log2_MUT-1', 'log2_MUT-2', 'log2_MUT-3']
@@ -160,15 +146,17 @@ print(levene_res)
 
 # Como en el test de normalidad tuve que rechazar la hipótesis nula, tengo que hacer un test no parametrico para comparar los grupos.
 
-# Test no paramétrico Mann-Whitney para comparar WT vs MUT (agrupando réplicas)
+# Test no paramétrico Mann-Whitney para comparar WT vs MUT 
 u_stat, p_value = ss.mannwhitneyu(wt_values, mut_values, alternative='two-sided')
 print(f"Test Mann-Whitney para WT vs MUT:")
-print(f"U-statistic = {u_stat:.3f}, p-value = {p_value:.3e}")
+print(f"U-statistic = {u_stat:.3f}, p-value = {p_value:.4e}")
+# Test Mann-Whitney para WT vs MUT:
+# U-statistic = 57054669.0000, p-value = 0.4026
 
 
+# Lo que yo quiero hacer en realidad es encontrar proteinas sobre o subexpresadas, por lo que voy a hacer una comparación proteína a proteína usando Mann-Whitney U
 
-# Lo que yo quiero hacer en realidad es encontrar proteinas up o downreguladas, por lo que voy a hacer una comparación proteína a proteína usando Mann-Whitney U
-# Test Mann-Whitney proteína por proteína
+# Prueba Mann Whitney proteína por proteína
 resultados = []
 
 for index, fila in datos_prot_final.iterrows():
@@ -207,8 +195,8 @@ print(top10_proteinas)
 # 3489  LPU83_pLPU83d_1291          9.0      0.1     0.893955              False
 # 1476          LPU83_3581          0.0      0.1     0.893955              False
 
-# Tanto en la comparación global como proteína por proteína, se trató de grupos independientes (WT y MUT), sin apareamiento entre observaciones, razón por la cual se utilizó la prueba de Mann-Whitney.
-# No se observan diferencias significativas para ninguna de las proteínas, ya que al observar los menores 10 pvalue puedo ver que ninguno es menor a 0.05.
+# Tanto en la comparación global como proteína por proteína, se trató de grupos independientes (WT y MUT), sin apareamiento entre observaciones, razón por la cual se utilizó la prueba de Mann Whitney.
+# No se observan diferencias significativas para ninguna de las proteínas
 
 # Como en proteómica solemos hacer T-test, quise intentar utilizarlo de todas maneras para observar los resultados
 # Además, agregué el calulo del FoldChange porque para determinar si una proteína esta sobre o subexpresada, es necesario tener ambos valores
@@ -255,3 +243,5 @@ print(proteinas_significativas)
 # En mis datos de proteómica, esto tiene sentido ya que el mutante es de una proteína hipotética que creemos es un regulador transcripcional los genes del sistema conjugativo.
 # Estos genes no aparecen en la wt pero si en la mutante, cosa que no se muestra en este script, pero quería ver si afectaba a algo más global de la cepa en sí.
 # Esto me dio una respuesta negativa, pudiendo observar que estaría afectando unicamente a nivel de proteínas ON-OFF, es decir en proteínas conjugativas
+
+
