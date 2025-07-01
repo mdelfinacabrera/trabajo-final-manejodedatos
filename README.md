@@ -14,20 +14,23 @@ La tabla cruda de datos fue anotada con DIA-NN, y la nueva tabla con las anotaci
 
 El dataset cotiene una tabla con las siguientes columnas:
 ➤ Protein.Group: Identificador interno del grupo de proteínas.
+
 ➤ Protein.Ids: Lista de identificadores únicos. Puede contener múltiples IDs si hay ambigüedad.
+
 ➤ Protein.Names: Nombres de las proteínas correspondientes a los IDs anteriores.
+
 ➤ Genes: Nombres de los genes codificantes de las proteínas detectadas. 
+
 ➤ First.Protein.Description: Descripción funcional de la primera proteína listada en el grupo. Incluye información como función putativa, localización, o familia proteica.
+
 ➤ WT-1, WT-2 y WT-3: Valores de la abundancia proteíca relativa en las tres réplicas biológicas de *Rhizobium favelukesii* LPU83 wild-type.
+
 ➤ MUT-1, MUT-2 y MUT-3: Valores de la abundancia proteíca relativa en las tres réplicas biológicas de *Rhizobium favelukesii* LPU83 mutante en *rcgR*.
 Dicho dataset se puede visualizar en `datos_proteomica.csv`
 
 ## Objetivo
 Con un avistaje general de los datos proteómicos, y más puntualmente en las proteínas conjugativas del plásmido pLPU83a, se observó que la mayoría de ellas están ausentes en la cepa wild-type y presentes en la cepa mutante, lo cual concuerda con los resultados previos del laboratorio. Sin embargo, también resulta de interés evaluar si la eliminación del gen *rcgR* afecta la expresión de otras proteínas no relacionadas directamente con la transferencia conjugativa.
-Es por esto que como objetivo de este trabajo planteé comparar las proteínas obtenidas tanto para *Rhizobium favelukesii* LPU83 wild-type (WT) como para *Rhizobium favelukesii* LPU83 mutante en *rcgR* (MUT)
-
-## Hipótesis
-La deleción de *rcgR* no induce alteraciones globales en la expresión proteica, sino que su efecto regulador se limita a un subconjunto específico de genes.
+Es por esto que como objetivo de este trabajo planteé comparar la abundancia relativa de las proteínas obtenidas tanto para *Rhizobium favelukesii* LPU83 wild-type (WT) como para *Rhizobium favelukesii* LPU83 mutante en *rcgR* (MUT)
 
 # Paso a paso
 ***Variable***
@@ -111,7 +114,6 @@ Además, en el t-test también se guardó un archivo con las proteínas cuyo p-v
 
 Los resultados coinciden con el test no paramétrico de que no existen proteínas sobre o subexpresadas.
 
-
 ## Conclusiones
 A través del análisis estadístico tanto de manera global como proteína por proteína, utilizando pruebas no paramétricas (Mann Whitney) y paramétricas (t-test), no se detectaron cambios significativos en la abundancia relativa de proteínas entre las condiciones analizadas.
 Estos resultados sugieren que el efecto del gen *rcgR* se limita principalmente al sistema conjugativo, sin generar alteraciones globales en el perfil proteico de la cepa. En consecuencia, se refuerza la idea de que esta proteína hipotética actúa como un regulador focalizado sobre genes específicos del plásmido pLPU83a, sin impactar de manera general sobre la fisiología celular.
@@ -119,3 +121,5 @@ Estos resultados sugieren que el efecto del gen *rcgR* se limita principalmente 
 ## Perspectivas para lo aprendido en esta materia
 Si bien no pude hacer la materia de manera sincrónica, me ayudó mucho a entender un poco más de estadística y no caer siempre en el t-test.
 Quisiera aplicar este análisis a otros datos proteómicos y, a futuro, también me va a servir cuando tenga que analizar estadística de peso seco de plantas. Además, tengo pensado como próximo desafío intentar transformar mis tablas de proteómica en un binomio para poder observar presencia-ausencia de manera más analítica y no solo solo visualmente. Es una herramienta que me va a facilitar el avistaje de datos que por el momento vengo haciendo de forma manual. Voy a utilizar como base lo que vimos respecto a distribuciones binomiales en la materia. Sin embargo, no lo elegí como tema para mi trabajo final porque me pareció más representativo de los conceptos aprendidos utilizar una distribución que, en un principio, creí iba a comportarse como distribución normal.
+Por último, una de mis últimas ideas y que no está plasmada aún en este trabajo, fue utilizar el gráfico de caja y la búsqueda de outliers no para eliminarlos de mi dataset, sino para prestarles más atención ya que son proteínas que están o muy expresadas o poco expresadas, las cuales podrían ser interesantes para analizar.
+Espero poder seguir utilizando las herramientas aprendidas tanto de la forma convencional, realizada en este trabajo, como de formas un poco más diversificadas pero que de todas formas simplifiquen el trabajo que hoy en día estoy realizando de manera manual.
